@@ -28,6 +28,7 @@ pub fn english_letter_distribution() -> HashMap<u8, f64> {
         (b'x', 0.00150),
         (b'y', 0.01974),
         (b'z', 0.00074),
+        (b' ', 0.2),
     ])
 }
 
@@ -49,8 +50,13 @@ pub fn count_sample(sample: &Vec<u8>) -> HashMap<u8, f64> {
     let l = sample.len() as f64;
     let mut result: HashMap<u8, f64> = HashMap::new();
     sample.iter().for_each(|u| {
+        let mut lower: u8 = *u;
+        // check if it's a capital letter and lowercase it
+        if (65..=(65 + 25)).contains(&lower) {
+            lower = u + 25;
+        }
         result
-            .entry(*u)
+            .entry(lower)
             .and_modify(|f| *f += 1f64 / l)
             .or_insert(1f64 / l);
     });

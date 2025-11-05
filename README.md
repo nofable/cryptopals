@@ -1,7 +1,13 @@
 Working through Cryptopals.com exercises
 
+2025-11-05
+Finished 1.4
+- refactored the code to take into account spaces and analyzing over other characters, not just letters.
+- Learnt about reading from a file.
+- Learnt about sub modules in the file system.
+
 2025-11-02
-Finished 1.2 
+Finished 1.3 
 Learnings:
 - Really enjoyed the API for Rust HashMaps with entry and modify
 - Started to learn about passing references around in Rust
