@@ -1,6 +1,8 @@
 use std::collections::{HashMap, HashSet};
+mod hamming;
 mod hex_to_base64;
 mod xor;
+use hamming::*;
 use hex_to_base64::*;
 use xor::*;
 
