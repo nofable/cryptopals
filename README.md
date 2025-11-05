@@ -1,6 +1,10 @@
 Working through Cryptopals.com exercises
 
 2025-11-05
+Finished 1.5
+- had some trickiness figuring out newlines and whether they count or not. But managed to get to the correct result.
+
+2025-11-05
 Finished 1.4
 - refactored the code to take into account spaces and analyzing over other characters, not just letters.
 - Learnt about reading from a file.
