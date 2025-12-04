@@ -1,9 +1,11 @@
 use std::collections::{HashMap, HashSet};
 mod hamming;
 mod hex_to_base64;
+mod transposer;
 mod xor;
 use hamming::*;
 use hex_to_base64::*;
+use transposer::*;
 use xor::*;
 
 fn main() {
@@ -13,6 +15,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use std::fs;
+
+    use base64::{Engine, prelude::BASE64_STANDARD};
 
     use super::*;
 
@@ -57,5 +61,34 @@ mod tests {
         let result = repeating_key_xor_strs(treatment, "ICE");
         let hexed = hex::encode(result);
         assert_eq!(hexed, expected);
+    }
+
+    #[test]
+    fn test_1_6() {
+        let content = fs::read_to_string("data_1_6.txt").unwrap();
+        let decoded = BASE64_STANDARD.decode(content).unwrap();
+        let mut results: Vec<(f64, usize)> = Vec::new();
+        for i in 2..40 {
+            if decoded.len() > i * 2 {
+                let first = &decoded[0..i];
+                let second = &decoded[i..(i * 2)];
+                let distance = hamming_distance(first, second);
+                let normalized = distance as f64 / i as f64;
+                results.push((normalized, i));
+            }
+        }
+        results.sort_by(|a, b| a.0.total_cmp(&b.0));
+
+        for (_, keysize) in &results[0..4] {
+            let blocks: Vec<Vec<u8>> = decoded
+                .chunks(*keysize)
+                .map(|block| block.to_vec())
+                .collect();
+
+            // transpose blocks
+            let transposed = transpose(blocks);
+            // single char XOR
+            // histogram for letter frequency
+        }
     }
 }
