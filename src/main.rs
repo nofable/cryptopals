@@ -65,30 +65,53 @@ mod tests {
 
     #[test]
     fn test_1_6() {
-        let content = fs::read_to_string("data_1_6.txt").unwrap();
+        let content = fs::read_to_string("data_1_6.txt")
+            .unwrap()
+            .replace("\n", "");
         let decoded = BASE64_STANDARD.decode(content).unwrap();
         let mut results: Vec<(f64, usize)> = Vec::new();
+        // guess at the key size by evaluating the lowest hamming_distance, normalized by keysize
         for i in 2..40 {
-            if decoded.len() > i * 2 {
+            if decoded.len() > i * 4 {
                 let first = &decoded[0..i];
                 let second = &decoded[i..(i * 2)];
-                let distance = hamming_distance(first, second);
-                let normalized = distance as f64 / i as f64;
-                results.push((normalized, i));
+                let third = &decoded[(i * 2)..(i * 3)];
+                let fourth = &decoded[(i * 3)..(i * 4)];
+                let distance1 = hamming_distance(first, second);
+                let distance2 = hamming_distance(second, third);
+                let distance3 = hamming_distance(third, fourth);
+                let normalized1 = distance1 as f64 / i as f64;
+                let normalized2 = distance2 as f64 / i as f64;
+                let normalized3 = distance3 as f64 / i as f64;
+                let average = (normalized1 + normalized2 + normalized3) / 3.0;
+                results.push((average, i));
             }
         }
         results.sort_by(|a, b| a.0.total_cmp(&b.0));
-
-        for (_, keysize) in &results[0..4] {
+        // iterate through the top results
+        for (_, keysize) in &results[0..3] {
             let blocks: Vec<Vec<u8>> = decoded
+                .clone()
                 .chunks(*keysize)
                 .map(|block| block.to_vec())
                 .collect();
 
             // transpose blocks
             let transposed = transpose(blocks);
+            let mut key_chars: Vec<char> = Vec::new();
             // single char XOR
-            // histogram for letter frequency
+            for tblock in transposed {
+                // histogram for letter frequency
+                let mut scx_results = decode_single_character_xor(&tblock);
+                scx_results.sort_by(|a, b| a.0.total_cmp(&b.0));
+                let top_result = scx_results.first().unwrap();
+                key_chars.push(top_result.1);
+            }
+            let key_string: String = key_chars.iter().collect();
+            println!("final key is '{}'", key_string);
+            let final_result =
+                repeating_key_xor_strs(&String::from_utf8(decoded.clone()).unwrap(), &key_string);
+            println!("Final result is {}", final_result);
         }
     }
 }
