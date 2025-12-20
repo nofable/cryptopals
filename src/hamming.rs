@@ -1,13 +1,14 @@
+/// Computes the Hamming distance (number of differing bits)
+/// between two equally-sized byte slices.
+///
+/// # Panics
+/// Panics if the slices have different lengths.
 pub fn hamming_distance(a: &[u8], b: &[u8]) -> usize {
     assert_eq!(a.len(), b.len());
     a.iter()
-        .zip(b.iter())
-        .map(|(i, j)| (i ^ j).count_ones() as usize)
+        .zip(b)
+        .map(|(a_byte, b_byte)| (a_byte ^ b_byte).count_ones() as usize)
         .sum()
-}
-
-pub fn hamming_distance_strs(a: &str, b: &str) -> usize {
-    hamming_distance(a.as_bytes(), b.as_bytes())
 }
 
 #[cfg(test)]
@@ -17,7 +18,7 @@ mod tests {
     #[test]
     fn test_hamming_distance() {
         assert_eq!(
-            hamming_distance_strs("this is a test", "wokka wokka!!!"),
+            hamming_distance("this is a test".as_bytes(), "wokka wokka!!!".as_bytes()),
             37
         );
     }

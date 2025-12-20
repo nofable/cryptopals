@@ -39,10 +39,12 @@ pub fn decode_single_character_xor(sample: &[u8]) -> Vec<(f64, char, String)> {
     let mut results: Vec<(f64, char, String)> = Vec::new();
     for c in chars {
         let xored = repeating_key_xor(sample, &[c]);
-        let distribution = count_sample(&xored);
-        let score = mean_squared_compare(&distribution, &english_letter_dist);
-        if let Ok(s) = String::from_utf8(xored) {
-            results.push((score, c as char, s));
+        if let Ok(text) = std::str::from_utf8(&xored) {
+            let distribution = count_sample(&text.chars().collect::<Vec<char>>());
+            let score = rmse(&distribution, &english_letter_dist);
+            if let Ok(s) = String::from_utf8(xored) {
+                results.push((score, c as char, s));
+            }
         }
     }
     results.sort_by(|a, b| a.0.total_cmp(&b.0));
