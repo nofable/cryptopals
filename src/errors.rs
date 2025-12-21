@@ -13,4 +13,7 @@ pub enum CryptopalsError {
 
     #[error("from hex error")]
     FromHex(#[from] hex::FromHexError),
+
+    #[error("hamming length mismatch")]
+    HammingLengthMismatch,
 }

@@ -23,7 +23,7 @@ pub fn vigenere(
             for j in 1..=hamming_sample_size {
                 let slice = &decoded[(i * (j - 1))..(i * j)];
                 if !slices.is_empty() {
-                    let distance = hamming_distance(slices.last().unwrap(), slice);
+                    let distance = hamming_distance(slices.last().unwrap(), slice)?;
                     normalized_hamming_distances.push(distance as f64 / i as f64);
                 }
                 slices.push(slice);
