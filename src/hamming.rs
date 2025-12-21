@@ -2,12 +2,9 @@ use crate::errors::CryptopalsError;
 
 /// Computes the Hamming distance (number of differing bits)
 /// between two equally-sized byte slices.
-///
-/// # Panics
-/// Panics if the slices have different lengths.
 pub fn hamming_distance(a: &[u8], b: &[u8]) -> Result<usize, CryptopalsError> {
     if a.len() != b.len() {
-        return Err(CryptopalsError::HammingLengthMismatch);
+        return Err(CryptopalsError::ParametersLengthMismatch);
     }
     Ok(a.iter()
         .zip(b)
@@ -28,8 +25,10 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
     fn test_length_mismatch() {
-        hamming_distance("blah".as_bytes(), "blahblah".as_bytes()).unwrap();
+        assert!(matches!(
+            hamming_distance("blah".as_bytes(), "blahblah".as_bytes()).unwrap_err(),
+            CryptopalsError::ParametersLengthMismatch
+        ))
     }
 }

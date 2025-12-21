@@ -2,18 +2,24 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum CryptopalsError {
-    #[error("xor length mismatch")]
-    XORLengthMismatch,
+    #[error("inputs must have the same length")]
+    ParametersLengthMismatch,
 
-    #[error("error converting fromUTF8")]
-    FromUtf8(#[from] std::string::FromUtf8Error),
+    #[error(transparent)]
+    Utf8(#[from] std::string::FromUtf8Error),
 
     #[error("invalid parameter")]
     InvalidParameter(String),
 
-    #[error("from hex error")]
-    FromHex(#[from] hex::FromHexError),
+    #[error(transparent)]
+    Hex(#[from] hex::FromHexError),
 
-    #[error("hamming length mismatch")]
-    HammingLengthMismatch,
+    #[error("Misshaped matrix in transpose")]
+    MisshapedMatrix { reason: String },
+
+    #[error(transparent)]
+    IO(#[from] std::io::Error),
+
+    #[error(transparent)]
+    Base64Decode(#[from] base64::DecodeError),
 }

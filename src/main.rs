@@ -20,14 +20,19 @@ struct Args {
 fn main() {
     let args = Args::parse();
     match vigenere(
-        args.input_file,
+        &args.input_file,
         args.max_hamming,
         args.hamming_sample_size,
         args.no_of_results,
     ) {
-        Ok(()) => {
-            println!("all worked!");
+        Ok(results) => {
+            for result in results {
+                println!("{}", result.key);
+                println!("{}", result.plaintext);
+                println!()
+            }
         }
+
         Err(err) => {
             println!("{:?}", err);
         }

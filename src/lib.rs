@@ -5,4 +5,4 @@ mod transposer;
 mod vigenere;
 mod xor;
 
-pub use vigenere::vigenere;
+pub use vigenere::*;

@@ -3,7 +3,7 @@ use crate::letters::*;
 
 pub fn xor_bytes(a: &[u8], b: &[u8]) -> Result<Vec<u8>, CryptopalsError> {
     if a.len() != b.len() {
-        return Err(CryptopalsError::XORLengthMismatch);
+        return Err(CryptopalsError::ParametersLengthMismatch);
     }
     Ok(a.iter().zip(b.iter()).map(|(&i, &j)| i ^ j).collect())
 }
@@ -115,7 +115,6 @@ mod tests {
                 println!("decode_single_character_xor failed on a line");
                 continue;
             };
-            results.sort_by(|a, b| a.0.total_cmp(&b.0));
             agg_results.append(&mut results);
         }
         agg_results.sort_by(|a, b| a.0.total_cmp(&b.0));

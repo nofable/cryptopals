@@ -29,6 +29,7 @@ pub static ENGLISH_LETTER_DISTRIBUTION: LazyLock<HashMap<char, f64>> = LazyLock:
         ('x', 0.00150),
         ('y', 0.01974),
         ('z', 0.00074),
+        // space frequency is intentionally high to favour English text
         (' ', 0.2),
     ])
 });
