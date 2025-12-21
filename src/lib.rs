@@ -1,8 +1,8 @@
-mod vigenere;
+mod errors;
 mod hamming;
-mod transposer;
-mod xor;
 mod letters;
+mod transposer;
+mod vigenere;
+mod xor;
 
 pub use vigenere::vigenere;
-

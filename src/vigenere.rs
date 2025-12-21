@@ -1,3 +1,4 @@
+use crate::errors::CryptopalsError;
 use crate::hamming::*;
 use crate::transposer::*;
 use crate::xor::*;
@@ -9,7 +10,7 @@ pub fn vigenere(
     max_hamming: usize,
     hamming_sample_size: usize,
     no_of_results: usize,
-) {
+) -> Result<(), CryptopalsError> {
     let content = fs::read_to_string(input_file).unwrap().replace("\n", "");
     let decoded = BASE64_STANDARD.decode(content).unwrap();
     let mut results: Vec<(f64, usize)> = Vec::new();
@@ -51,7 +52,7 @@ pub fn vigenere(
         // single char XOR
         for tblock in transposed {
             // histogram for letter frequency
-            let mut scx_results = decode_single_character_xor(&tblock);
+            let mut scx_results = decode_single_character_xor(&tblock)?;
             scx_results.sort_by(|a, b| a.0.total_cmp(&b.0));
             let top_result = scx_results.first().unwrap();
             key_chars.push(top_result.1);
@@ -59,9 +60,10 @@ pub fn vigenere(
         let key_string: String = key_chars.iter().collect();
         println!("final key is '{}'", key_string);
         let final_result =
-            repeating_key_xor_strs(&String::from_utf8(decoded.clone()).unwrap(), &key_string);
+            repeating_key_xor_strs(&String::from_utf8(decoded.clone()).unwrap(), &key_string)?;
         println!("Final result is {}", final_result);
     }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -69,6 +71,6 @@ mod tests {
     use super::*;
     #[test]
     fn test_1_6() {
-        let result = vigenere("data_1_6.txt".into(), 40, 4, 3);
+        let _ = vigenere("data_1_6.txt".into(), 40, 4, 3);
     }
 }
