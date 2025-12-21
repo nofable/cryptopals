@@ -31,7 +31,6 @@ pub fn repeating_key_xor(sample: &[u8], key: &[u8]) -> Vec<u8> {
 
 pub fn decode_single_character_xor(sample: &[u8]) -> Vec<(f64, char, String)> {
     let chars: Vec<u8> = (32u8..=126u8).collect();
-    let english_letter_dist = english_letter_distribution();
     // in the results vec,
     // f64 is the mean_squared score,
     // char is the XOR char
@@ -41,7 +40,7 @@ pub fn decode_single_character_xor(sample: &[u8]) -> Vec<(f64, char, String)> {
         let xored = repeating_key_xor(sample, &[c]);
         if let Ok(text) = std::str::from_utf8(&xored) {
             let distribution = count_sample(&text.chars().collect::<Vec<char>>());
-            let score = rmse(&distribution, &english_letter_dist);
+            let score = rmse(&distribution, &ENGLISH_LETTER_DISTRIBUTION);
             if let Ok(s) = String::from_utf8(xored) {
                 results.push((score, c as char, s));
             }

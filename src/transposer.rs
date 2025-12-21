@@ -6,18 +6,15 @@ pub fn transpose<T: Clone>(matrix: Vec<Vec<T>>) -> Vec<Vec<T>> {
     let rows = matrix.len();
     let cols = matrix[0].len();
 
-    let mut result: Vec<Vec<T>> = vec![vec![]; cols];
+    let mut result = vec![vec![]; cols];
 
-    for i in 0..rows {
-        for j in 0..cols {
-            if let Some(item) = matrix[i].get(j) {
-                result.get_mut(j).unwrap().push(item.clone());
-            } else {
-                // if we are the last row it is fine to be short
-                if i < rows - 1 {
-                    panic!("Only the last row can be short");
-                }
-            }
+    for (i, row) in matrix.iter().enumerate() {
+        for (j, item) in row.iter().enumerate() {
+            result[j].push(item.clone());
+        }
+
+        if row.len() < cols && i < rows - 1 {
+            panic!("Only the last row can be short");
         }
     }
     result
