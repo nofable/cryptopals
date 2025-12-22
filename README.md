@@ -1,28 +1,28 @@
-Working through Cryptopals.com exercises
+# Review of Cryptopal Chapter 1 challenges 1-6 (Vigenere)
+2025-12-22
 
-2025-11-05
-Finished 1.5
-- had some trickiness figuring out newlines and whether they count or not. But managed to get to the correct result.
+#### Goals
+I challenged myself to tackle Cryptopals in Autumn/Winter 2025 for these reasons:
+- I wanted to scrape the mould of my Rust skills
+- I wanted to get my hands dirty with real bytes rather than lofty abstractions
+- I wanted to learn Neovim
+- I wanted something low-stakes I could chip away at before or after work
 
-2025-11-05
-Finished 1.4
-- refactored the code to take into account spaces and analyzing over other characters, not just letters.
-- Learnt about reading from a file.
-- Learnt about sub modules in the file system.
+I did challenges 1-6. Still need to do 7 & 8 to finish the first chapter but decided to pause after Vigenere.
+The reason I have decided to pause is because I have achieved my goals, and I now want to spend my time doing other things.
 
-2025-11-02
-Finished 1.3 
-Learnings:
-- Really enjoyed the API for Rust HashMaps with entry and modify
-- Started to learn about passing references around in Rust
-- Interesting to see that sort doesn't support f64 by default
-- Proud of myself for working on lower level functions that deal with bytes.
+#### Things I learned about cryptography:
+- XOR has this awesome characteristic in that it is reversible.  If A XOR B = C, then A XOR C = B and B XOR C = A.
+- Cryptography is all about the fiddly bits. paddings, line breaks, character sets.
+- The Vigenere code breaker is very elegant.
 
-2025-10-30
-Did chapters 1.1 and 1.2
-Learnings:
-- XOR have the interesting characteristic that they are reversible. If A XOR B = C, then A XOR C = B and B XOR C = A.
-- Learnt about the zip function in Rust.
-- Learnt the should_panic annotation for Rust test
+#### Things I learned about Rust:
+- Loads of language features
+- How to structure a crate
+- Idiomatic coding
+- Clap command line crate
+- thiserror crate
+- string chars vs bytes
 
-
+#### Summary
+Overall I am proud of myself for finding the time to do these challenges. I learned a lot of Rust skills and neovim skills. I picked up some beginner level cryptography too which is nice. The challenges are very nicely framed. I would recommend others to try out [cryptopals](https://cryptopals.com/).
